@@ -1,0 +1,396 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<title>Branching &amp; Merging: The Subversion Way</title>
+    
+<!-- metadata -->
+<meta name="generator" content="Brackets" />
+<meta name="version" content="S5 1.1" />
+<meta name="presdate" content="20121129" />
+<meta name="author" content="Ryan Wightman" />
+<meta name="company" content="Aimetis Corp." />
+    
+<!-- configuration parameters -->
+<meta name="defaultView" content="slideshow" />
+<meta name="controlVis" content="hidden" />
+    
+<!-- style sheet links -->
+<link rel="stylesheet" href="ui/default/slides.css" type="text/css" media="projection" id="slideProj" />
+<link rel="stylesheet" href="ui/default/outline.css" type="text/css" media="screen" id="outlineStyle" />
+<link rel="stylesheet" href="ui/default/print.css" type="text/css" media="print" id="slidePrint" />
+<link rel="stylesheet" href="ui/default/opera.css" type="text/css" media="projection" id="operaFix" />
+    
+<!-- S5 JS -->
+<script src="ui/default/slides.js"></script>
+</head>
+<body>
+
+<div class="layout">
+<div id="controls"><!-- DO NOT EDIT --></div>
+<div id="currentSlide"><!-- DO NOT EDIT --></div>
+<div id="header"></div>
+<div id="footer">
+<h1>Waterloo, ON&#8226;November 29th, 2012</h1>
+<h2>Branching &amp; Merging: The Subversion Way</h2>
+</div>
+
+</div>
+
+
+<div class="presentation">
+
+<div class="slide">
+<h1>Branching &amp; Merging</h1>
+<h2>The Subversion Way</h2>
+<h3>Ryan Wightman</h3>
+<h4>Aimetis Corp.</h4>
+</div>
+
+<div class="slide">
+    <h1>About the repository</h1>
+    <div class="slidecontent">
+        <ul>
+            <li>Our Subversion server has one repository: <code>svn://wat-dc1/aimetis</code></li>
+            <li>In theory you can access a Subversion repository via many different protocols: SVN, SVN+SSH, HTTP, HTTPS</li>
+            <li>Our server is only configured for SVN protocol</li>
+        </ul>
+    </div>
+    <div class="handout">
+    </div>
+</div>
+    
+<div class="slide">
+    <h1>About the repository</h1>
+    <div class="slidecontent">
+        <div>Subversion's repository is a network-accessible file-system that does the following:</div>
+        <ul>
+            <li>Versioning</li>
+            <li>Flexible meta-data for files and directories</li>
+            <li>Cheap [in terms of space] copies witin repository</li>
+        </ul>
+    </div>
+    <div class="handout">
+    </div>
+</div>
+    
+<div class="slide">
+    <h1>Repository Layout</h1>
+    <div class="slidecontent">
+        <ul>
+            <li>Subversion does not restrict layout</li>
+            <li>Community has adopted two layouts as best-practice</li>
+        </ul>
+    </div>
+    <div class="handout">
+    </div>
+</div>
+    
+<div class="slide">
+    <h1>Repository Layout: Single Project</h1>
+    <div class="slidecontent">
+        <ul>
+            <li>Single Project (or set of tightly related projects)</li>
+            <ul>
+                <li>trunk</li>
+                <li>branches</li>
+                <li>tags</li>
+            </ul>
+        </ul>
+    </div>
+    <div class="handout">
+    </div>
+</div>
+    
+<div class="slide">
+    <h1>Repository Layout: Unrelated Projects</h1>
+    <div class="slidecontent">
+        <ul>
+            <li>Unrelated or loosely related projects</li>
+            <ul>
+                <li>ProjectA</li>
+                <ul>
+                    <li>trunk</li>
+                    <li>branches</li>
+                    <li>tags</li>
+                </ul>
+                <li>ProjectB</li>
+                <ul>
+                    <li>trunk</li>
+                    <li>branches</li>
+                    <li>tags</li>
+                </ul>
+            </ul>
+        </ul>
+    </div>
+    <div class="handout">
+    </div>
+</div>
+    
+<div class="slide">
+    <h1>Our Repository Layout</h1>
+    <div class="slidecontent">
+        <ul>
+            <li>We have a mixed bag of layouts</li>
+            <li>Initially setup as "single project" layout</li>
+            <li>Added new modules as "unrelated projects" layout</li>
+            <li>Going forward, we should be using the "unrelated projects" layout</li>
+        </ul>
+    </div>
+    <div class="handout">
+    </div>
+</div>
+
+<div class="slide">
+    <h1>Subversion Metadata</h1>
+    <div class="slidecontent">
+        <ul>
+            <li>Every file/folder within the repository can have associated meta-data</li>
+            <img alt="TortoiseSVN properties dialog for svn://wat-dc1/aimetis/trunk/aira" src="images/folder-properties.PNG" />
+            <li>Subversion clients make use of properties prefixed with <code>svn:</code></li>
+        </ul>
+    </div>
+    <div class="handout">
+    </div>
+</div>
+
+<div class="slide">
+    <h1>Subversion Metadata: SVN:IGNORE</h1>
+    <div class="slidecontent">
+        <ul>
+            <li>List of file/directory names or patterns to ignore when considering modifications are tracked witihin the <code>svn:ignore</code> property</li>
+            <img alt="TortoiseSVN edit-properties dialog for svn://wat-dc1/aimetis/trunk/aira" src="images/svn-ignore.PNG" />
+        </ul>
+    </div>
+    <div class="handout">
+    </div>
+</div>
+
+<div class="slide">
+    <h1>Subversion Metadata: SVN:MERGEINFO</h1>
+    <div class="slidecontent">
+        <ul>
+            <li>Log of revisions merged into a particular node are tracked within the <code>svn:mergeinfo</code> property</li>
+            <img alt="TortoiseSVN edit-properties dialog for svn://wat-dc1/aimetis/trunk/aira" src="images/svn-mergeinfo.PNG" />
+        </ul>
+    </div>
+    <div class="handout">
+    </div>
+</div>
+
+<div class="slide">
+    <h1>How is SVN:MERGEINFO used</h1>
+    <div class="slidecontent">
+        <ul>
+            <li>Whenever a merge is performed, Subversion clients update the <code>svn:mergeinfo</code> property with details of the merge:</li>
+            <ul>
+                <li>Source of the merge</li>
+                <code>/branches/6.10.0.x</code>
+                <li>Range of revisions merged</li>
+                <code>39040-39311,39521,39527,39533,39541</code>
+            </ul>
+            <li>Subversion clients use the <code>svn:mergeinfo</code> property to determine which revisions are eligible to be merged</li>
+        </ul>        
+    </div>
+    <div class="handout">
+    </div>
+</div>
+
+<div class="slide">
+    <h1>Eligible Revisions for Merge</h1>
+    <div class="slidecontent">
+        <img alt="TortiseSVN revision log showing eligible revisions"  src="images/log-showing-eligible-revisions.PNG" />
+    </div>
+    <div class="handout">
+    </div>
+</div>
+    
+<div class="slide">
+    <h1>Common Merge Scenarios</h1>
+    <div class="slidecontent">
+        <ul>
+            <li>Synchronize Feature Branch</li>
+            <li>Reintegrate Feature Branch</li>
+            <li>Cherry-pick Changeset</li>
+            <li>Record-only Merge</li>
+        </ul>
+    </div>
+    <div class="handout">
+    </div>
+</div>
+    
+<div class="slide">
+    <h1>Note and Warnigns</h1>
+    <div class="slidecontent">
+        <ul>
+            <li>After performing a merge, the changes will be pending within your working copy and will need to be reviewed and committed before others can use them.</li>
+            <li>Merging should always be performed at the root of a repository, since a <code>svn:mergeinfo</code> property will be added to the merge target</li>
+            <li>Example repository roots</li>
+            <ul>
+                <li>svn://wat-dc1/aimetis/trunk</li>
+                <li>svn://wat-dc1/aimetis/branches/6.10.0.x</li>
+                <li><del>svn://wat-dc1/aimetis/trunk/aira/BaseLibCS</del></li>
+            </ul>            
+        </ul>
+    </div>
+    <div class="handout">
+    </div>
+</div>
+    
+<div class="slide">
+    <h1>Synchronize Feature Branch</h1>
+    <div class="slidecontent">        
+        <ul>
+            <li>Scenario</li>
+            Update a feature branch with upstream changes
+            <li>How it is done in Tortoise SVN</li>
+            <ol>
+                <li>Merge range of revisions (from within feature branch)</li>
+                <li>Select upstream branch's URL</li>
+                <li>Leave range blank (implies merge all eligible changes)</li>
+            </ol>
+        </ul>
+    </div>
+    <div class="handout">
+    </div>
+</div>
+    
+<div class="slide">
+    <h1>Synchronize Feature Branch</h1>
+    <div class="slidecontent">
+        <img alt="Tortoise Merge Range of Revisions dialog" src="images/tortoise-sync-merge.PNG" />
+    </div>
+    <div class="handout">
+    </div>
+</div>
+    
+<div class="slide">
+    <h1>Reintegrate Feature Branch</h1>
+    <div class="slidecontent">        
+        <ul>
+            <li>Scenario</li>
+            Feature is complete and ready to be integrated into its upstream code-base
+            <li>How it is done in Tortoise SVN</li>
+            <ol>
+                <li>Perform a <em>Synchronize Feature Branch</em> merge</li>
+                <li>Reintegrate Branch (from within upstream code-base)</li>
+                <li>Select upstream branch's URL</li>
+                <li>Leave range blank (implies merge all eligible changes)</li>
+            </ol>
+        </ul>
+    </div>
+    <div class="handout">
+    </div>
+</div>
+    
+<div class="slide">
+    <h1>Reintegrate Feature Branch</h1>
+    <div class="slidecontent">
+        <img alt="Tortoise Reintegrate merge dialog" src="images/tortoise-reintegrate-merge.PNG" />
+    </div>
+    <div class="handout">
+    </div>
+</div>
+    
+<div class="slide">
+    <h1>Cherry-pick Changeset</h1>
+    <div class="slidecontent">        
+        <ul>
+            <li>Scenario</li>
+            Need to copy specific changes that already exist in another branch. We typically use this when merging fixes between trunk and release branches.
+            <li>How it is done in Tortoise SVN</li>
+            <ol>
+                <li>Merge range of revisions (from within upstream code-base)</li>
+                <li>Select URL of branch containing the fix (e.g. the release branch)</li>
+                <li>Select the particular revisions to be merged</li>
+            </ol>
+        </ul>
+    </div>
+    <div class="handout">
+    </div>
+</div>
+    
+<div class="slide">
+    <h1>Cherry-pick Changeset</h1>
+    <div class="slidecontent">
+        <img alt="Tortoise Select revision range dialog" src="images/tortoise-select-revisions-to-cherry-pick.PNG" />
+    </div>
+    <div class="handout">
+        Notice the grey revisions, they are not eligible for merge (they have already been merged).
+    </div>
+</div>
+    
+<div class="slide">
+    <h1>Record-only Merge</h1>
+    <div class="slidecontent">        
+        <ul>
+            <li>Scenario</li>
+            Used to prevent a range of revisions from being merged. Typically this will be used if a change is manually merged between trunk and release branches.
+            <li>How it is done in Tortoise SVN</li>
+            <ol>
+                <li>Merge range of revisions (from within upstream code-base)</li>
+                <li>Select URL of branch containing the fix (e.g. the release branch)</li>
+                <li>Select the particular revisions that are to be blocked</li>
+                <li>Check "Only record the merge" option</li>
+            </ol>
+        </ul>
+    </div>
+    <div class="handout">
+    </div>
+</div>
+    
+<div class="slide">
+    <h1>Record-only Merge</h1>
+    <div class="slidecontent">
+        <img alt="Tortoise Check record-only option" src="images/record-only-merge.PNG" />
+    </div>
+    <div class="handout">
+    </div>
+</div>
+    
+<div class="slide">
+    <h1>Discussion Points</h1>
+    <div class="slidecontent">
+        How can we make release-branch reintegration easiser?
+        <ul>
+            <li>Performn <em>record-only merge</em> of changeset from branch into trunk</li>
+            <li>Make all fixes and trunk and merge fixes into release branch--eliminating the need to reintegrate</li>
+        </ul>
+        
+        Exceptions to always merging at root of repository:
+        <ul>
+            <li>When encountering tree conflicts</li>
+            <ol>
+               <li>Begin merge at root</li> 
+                <li>&#398; tree conflict</li>
+                <ul>
+                    <li>begin new merge from old to new directory name </li>
+                </ul>                    
+            </ol>
+        </ul>
+    </div>    
+</div>
+    
+<!-- TEMPLATE SLIDE
+<div class="slide">
+    <h1>[slide title]</h1>
+    <div class="slidecontent">
+        <ul>
+            <li>[point one]</li>
+            <li>[point two]</li>
+            <li>[point three]</li>
+            <li>[point four]</li>
+            <li>[point five]</li>
+        </ul>
+    </div>
+    <div class="handout">
+    [any material that should appear in print but not on the slide]
+    </div>
+</div>
+-->
+
+</div>
+
+</body>
+</html>
